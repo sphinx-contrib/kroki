@@ -19,7 +19,9 @@ jobs:
         env:
           PYTHON_VERSION: ${{ matrix.python }}
           SPHINX_VERSION: ${{ matrix.sphinx }}
-        run: ./run deps
+        run: |
+          ./run init
+          ./run deps
       - name: Run tests
         env:
           PYTHON_VERSION: ${{ matrix.python }}
