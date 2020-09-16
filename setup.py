@@ -21,7 +21,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "sphinx",
-        "request>=2.4.2",
+        "requests>=2.4.2",
     ],
     extras_require={
         "code": ["black", "mypy"],
