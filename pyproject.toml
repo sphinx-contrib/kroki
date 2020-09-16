@@ -7,9 +7,9 @@ module = "sphinx-kroki"
 author = "Martin Hasoň"
 author-email = "martin.hason@gmail.com"
 home-page = "https://github.com/hason/sphinx-kroki"
-description-file = "README.md",
+description-file = "README.md"
 classifiers = ["License :: OSI Approved :: MIT License"]
-requires-python = ">=3.6",
+requires-python = ">=3.6"
 requires = [
     "sphinx",
     "requests>=2.4.2",
