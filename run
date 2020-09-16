@@ -8,10 +8,10 @@ url="https://raw.githubusercontent.com/webuni/shell-task-runner/master/runner"
 _decorator()( _decorator_docker_compose_run "$@" )
 
 # Install dependencies
-task_deps()( _run pip install --ignore-installed -e .[code,testing] "sphinx==${SPHINX_VERSION:-3.*}" 2>&1 )
+task_deps()( _run pip install --ignore-installed -e .[code,test] "sphinx==${SPHINX_VERSION:-3.*}" 2>&1 )
 
 # Update dependencies to the latest versions
-task_deps__latest()( _run pip install --ignore-installed --upgrade -e .[code,testing] "sphinx==${SPHINX_VERSION:-3.*}" 2>&1 )
+task_deps__latest()( _run pip install --ignore-installed --upgrade -e .[code,test] "sphinx==${SPHINX_VERSION:-3.*}" 2>&1 )
 
 # Init virtual environment
 # @service python

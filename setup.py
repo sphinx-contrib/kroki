@@ -8,7 +8,7 @@ setup(
     version="1.0.0",
     author="Martin Hasoň",
     author_email="martin.hason@gmail.com",
-    description="A small example package",
+    description="Kroki integration into sphinx",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/hason/sphinx-kroki",
@@ -25,7 +25,7 @@ setup(
     ],
     extras_require={
         "code": ["black", "mypy"],
-        "testing": [
+        "test": [
             "coverage",
             "pytest",
             "pytest-cov",

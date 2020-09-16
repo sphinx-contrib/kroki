@@ -1,13 +1,27 @@
 [build-system]
-requires = ["flit_core >=2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["setuptools", "flit_core >=2,<4"]
+build-backend = "setuptools.build_meta"
 
 [tool.flit.metadata]
-module = "sphinx_kroki"
+module = "sphinx-kroki"
 author = "Martin Hasoň"
 author-email = "martin.hason@gmail.com"
 home-page = "https://github.com/hason/sphinx-kroki"
+description-file = "README.md",
 classifiers = ["License :: OSI Approved :: MIT License"]
+requires-python = ">=3.6",
+requires = [
+    "sphinx",
+    "requests>=2.4.2",
+]
+
+[tool.flit.metadata.requires-extra]
+code = ["black", "mypy"]
+test = [
+    "coverage",
+    "pytest",
+    "pytest-cov",
+]
 
 [tool.pytest.ini_options]
 markers = [
