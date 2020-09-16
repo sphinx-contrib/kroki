@@ -1,0 +1,35 @@
+version: '3.6'
+
+services:
+  python:
+    image: minidocks/python:${PYTHON_VERSION:-3.8}-build
+    volumes:
+      - .:$PWD:cached
+      - /tmp:/tmp
+    environment:
+      VENV_PATH: $PWD/venv
+      KROKI_URL: http://kroki
+    depends_on:
+      - kroki
+    working_dir: $PWD
+    command: sshd
+
+  kroki:
+    image: yuzutech/kroki
+    environment:
+      - KROKI_BLOCKDIAG_HOST=blockdiag
+      - KROKI_MERMAID_HOST=mermaid
+      - KROKI_BPMN_HOST=bpmn
+    depends_on:
+      - blockdiag
+      - mermaid
+      - bpmn
+
+  blockdiag:
+    image: yuzutech/kroki-blockdiag
+
+  mermaid:
+    image: yuzutech/kroki-mermaid
+
+  bpmn:
+    image: yuzutech/kroki-bpmn

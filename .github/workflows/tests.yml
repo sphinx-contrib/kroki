@@ -1,0 +1,26 @@
+name: Tests
+
+on:
+  push: ~
+  pull_request: ~
+
+jobs:
+  pytest:
+    name: Python on ${{ matrix.python }} and Sphinx ${{ matrix.sphinx }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ 3.6, 3.7, 3.8 ]
+        sphinx: [ 1.*, 2.*, 3.* ]
+    steps:
+      - name: Update code
+        uses: actions/checkout@v2
+      - name: Install dependencies (Sphinx ${{ matrix.sphinx }})
+        env:
+          PYTHON_VERSION: ${{ matrix.python }}
+          SPHINX_VERSION: ${{ matrix.sphinx }}
+        run: ./run deps
+      - name: Run tests
+        env:
+          PYTHON_VERSION: ${{ matrix.python }}
+        run: ./run tests
