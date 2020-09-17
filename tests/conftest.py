@@ -6,7 +6,6 @@ import pytest
 
 import sphinx
 from sphinx.testing.path import path
-from sphinx.testing import comparer
 
 pytest_plugins = "sphinx.testing.fixtures"
 
@@ -26,10 +25,6 @@ def pytest_report_header(config):
         header += "\nbase tempdir: %s" % config._tmp_path_factory.getbasetemp()
 
     return header
-
-
-def pytest_assertrepr_compare(op, left, right):
-    comparer.pytest_assertrepr_compare(op, left, right)
 
 
 def _initialize_test_directory(session):

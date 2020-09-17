@@ -6,15 +6,22 @@
 
 import re
 import pytest
+from sphinx.application import Sphinx
+from sphinx.testing.path import path
 
 
-@pytest.mark.sphinx('html', testroot='kroki')
-def test_kroki_html(app, status, warning):
+def get_content(app: Sphinx) -> str:
     app.builder.build_all()
 
-    content = (app.outdir / 'index.html').read_text()
+    index = (app.outdir / 'index.html')
+    return index.read_text() if 'read_text' in path.__dict__ else index.text()
 
-    html = (r'<div class="figure align-default" .*?>\s*'
+
+@pytest.mark.sphinx('html', testroot='kroki', confoverrides={'master_doc': 'index'})
+def test_kroki_html(app, status, warning):
+    content = get_content(app)
+
+    html = (r'<div class="figure(?: align-default)?" .*?>\s*'
             r'<div class="kroki kroki-plantuml"><a .+?><img .+?/></a>.*?'
             r'<p class="caption"><span class="caption-text">caption of diagram</span>.*</p>\s*</div>')
     assert re.search(html, content, re.S)
@@ -39,13 +46,11 @@ def test_kroki_html(app, status, warning):
     assert re.search(html, content, re.S)
 
 
-@pytest.mark.sphinx('html', testroot='kroki', confoverrides={'kroki_inline_svg': True})
+@pytest.mark.sphinx('html', testroot='kroki', confoverrides={'kroki_inline_svg': True, 'master_doc': 'index'})
 def test_kroki_html_inline_svg(app, status, warning):
-    app.builder.build_all()
+    content = get_content(app)
 
-    content = (app.outdir / 'index.html').read_text()
-
-    html = (r'<div class="figure align-default" .*?>\s*'
+    html = (r'<div class="figure(?: align-default)?" .*?>\s*'
             r'<div class="kroki kroki-plantuml">.+?<svg.+?</svg>.*?'
             r'<p class="caption"><span class="caption-text">caption of diagram</span>.*</p>\s*</div>')
     assert re.search(html, content, re.S)

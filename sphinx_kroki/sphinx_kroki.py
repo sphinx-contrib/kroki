@@ -1,7 +1,7 @@
 import posixpath
+from hashlib import sha1
 from os import path
 from typing import Any, Dict, List, Tuple, Optional
-
 import requests
 
 import sphinx
@@ -9,11 +9,12 @@ from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
 from sphinx.application import Sphinx
+from sphinx.builders import Builder
 from sphinx.errors import SphinxError
 from sphinx.ext.graphviz import figure_wrapper, graphviz, align_spec
 from sphinx.locale import __
-from sphinx.util import logging, sha1
-from sphinx.util.docutils import SphinxDirective, SphinxTranslator
+from sphinx.util import logging
+from sphinx.util.docutils import SphinxDirective
 from sphinx.util.i18n import search_image_for_language
 from sphinx.util.osutil import ensuredir
 from sphinx.writers.html import HTMLTranslator
@@ -161,9 +162,9 @@ class Kroki(SphinxDirective):
             return [figure]
 
 
-def render_kroki(self: SphinxTranslator, diagram_type: str, diagram_source: str,
+def render_kroki(builder: Builder, diagram_type: str, diagram_source: str,
                  output_format: str, prefix: str = 'kroki') -> Tuple[str, str]:
-    kroki_url: str = self.builder.config.kroki_url
+    kroki_url: str = builder.config.kroki_url
     payload: Dict[str, str] = {
         "diagram_source": diagram_source,
         "diagram_type": diagram_type,
@@ -172,8 +173,8 @@ def render_kroki(self: SphinxTranslator, diagram_type: str, diagram_source: str,
 
     hashkey = (str(kroki_url) + str(payload)).encode()
     fname = '%s-%s.%s' % (prefix, sha1(hashkey).hexdigest(), output_format)
-    relfn = posixpath.join(self.builder.imgpath, fname)
-    outfn = path.join(self.builder.outdir, self.builder.imagedir, fname)
+    relfn = posixpath.join(builder.imgpath, fname)
+    outfn = path.join(builder.outdir, builder.imagedir, fname)
 
     if path.isfile(outfn):
         return relfn, outfn
@@ -199,7 +200,7 @@ def render_html(self: HTMLTranslator, node: kroki, diagram_type: str, diagram_so
     output_format: str = node.get('format', self.builder.config.kroki_output_format)
 
     try:
-        fname, outfn = render_kroki(self, diagram_type, diagram_source, output_format, prefix)
+        fname, outfn = render_kroki(self.builder, diagram_type, diagram_source, output_format, prefix)
     except KrokiError as exc:
         logger.warning(__('kroki %s diagram (%s) with code %r: %s'), diagram_type, output_format, diagram_source, exc)
         raise nodes.SkipNode from exc
