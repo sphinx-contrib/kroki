@@ -9,6 +9,7 @@ jobs:
     name: Python on ${{ matrix.python }} and Sphinx ${{ matrix.sphinx }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python: [ 3.6, 3.7, 3.8 ]
         sphinx: [ 1.*, 2.*, 3.* ]
