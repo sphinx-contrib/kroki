@@ -3,10 +3,10 @@ requires = ["setuptools", "flit_core >=2,<4"]
 build-backend = "setuptools.build_meta"
 
 [tool.flit.metadata]
-module = "sphinx-kroki"
+module = "sphinxcontrib-kroki"
 author = "Martin Hasoň"
 author-email = "martin.hason@gmail.com"
-home-page = "https://github.com/hason/sphinx-kroki"
+home-page = "https://github.com/sphinx-contrib/kroki"
 description-file = "README.md"
 classifiers = ["License :: OSI Approved :: MIT License"]
 requires-python = ">=3.6"

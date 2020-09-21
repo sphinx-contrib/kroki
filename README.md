@@ -9,14 +9,14 @@ Instalation
 Install this package via pip:
 
 ```shell script
-pip install sphinx-kroki
+pip install sphinxcontrib-kroki
 ```
 
 and enable in project configuration (`conf.py`):
 
 ```python
 extensions = [
-    'sphinx_kroki',
+    'sphinxcontrib.kroki',
 ]
 ```
 
@@ -71,3 +71,10 @@ Configuration
 - `kroki_url` (default https://kroki.io).
 - `kroki_output_format` (default svg).
 - `kroki_inline_svg` (dafault False).
+
+Alternatives
+------------
+
+- https://github.com/sphinx-contrib/plantuml
+- https://github.com/sphinx-contrib/gravizo
+- https://github.com/j-martin/sphinx-diagrams

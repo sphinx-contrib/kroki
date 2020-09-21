@@ -4,22 +4,15 @@ from os import path
 from typing import Any, Dict, List, Tuple, Optional
 import requests
 
-import sphinx
-from docutils import nodes
 from docutils.nodes import Node
 from docutils.parsers.rst import directives
-from sphinx.application import Sphinx
 from sphinx.builders import Builder
 from sphinx.errors import SphinxError
 from sphinx.ext.graphviz import figure_wrapper, graphviz, align_spec
 from sphinx.locale import __
-from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective
 from sphinx.util.i18n import search_image_for_language
 from sphinx.util.osutil import ensuredir
-from sphinx.writers.html import HTMLTranslator
-
-logger = logging.getLogger(__name__)
 
 formats = ('png', 'svg', 'jpeg', 'base64', 'txt', 'utxt')
 
@@ -193,52 +186,3 @@ def render_kroki(builder: Builder, diagram_type: str, diagram_source: str,
         raise KrokiError(__('kroki did not produce a diagram')) from e
     except IOError as e:
         raise KrokiError(__('Unable to write diagram to file %r') % outfn) from e
-
-
-def render_html(self: HTMLTranslator, node: kroki, diagram_type: str, diagram_source: str,
-                options: Dict, prefix: str = 'kroki', kroki_class: str = None) -> None:
-    output_format: str = node.get('format', self.builder.config.kroki_output_format)
-
-    try:
-        fname, outfn = render_kroki(self.builder, diagram_type, diagram_source, output_format, prefix)
-    except KrokiError as exc:
-        logger.warning(__('kroki %s diagram (%s) with code %r: %s'), diagram_type, output_format, diagram_source, exc)
-        raise nodes.SkipNode from exc
-
-    classes = [kroki_class, 'kroki', 'kroki-'+diagram_type] + node.get('classes', [])
-
-    if fname is None:
-        self.body.append(self.encode(diagram_source))
-    else:
-        self.body.append('<div class="%s">' % ' '.join(filter(None, classes)))
-        if 'align' in node:
-            self.body.append(
-                '<div align="%s" class="align-%s">' % (node["align"], node["align"])
-            )
-        if output_format == 'svg' and self.builder.config.kroki_inline_svg:
-            with open(outfn, 'r') as f:
-                self.body.append('%s' % f.read())
-        else:
-            self.body.append(
-                '<a href="%s"><img src="%s" alt="%s" /></a>'
-                % (fname, fname, self.encode(options.get('caption', diagram_source)).strip())
-            )
-        if 'align' in node:
-            self.body.append("</div>\n")
-        self.body.append("</div>\n")
-
-    raise nodes.SkipNode
-
-
-def html_visit_kroki(self: HTMLTranslator, node: kroki) -> None:
-    render_html(self, node, node['type'], node['code'], node['options'])
-
-
-def setup(app: Sphinx) -> Dict[str, Any]:
-    app.add_node(kroki, html=(html_visit_kroki, None))
-    app.add_directive('kroki', Kroki)
-    app.add_config_value('kroki_url', 'https://kroki.io', 'env')
-    app.add_config_value('kroki_output_format', 'svg', 'env')
-    app.add_config_value('kroki_inline_svg', False, 'env')
-
-    return {'version': sphinx.__display_version__, 'parallel_read_safe': True}

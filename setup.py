@@ -1,18 +1,18 @@
-from setuptools import find_packages, setup
+from setuptools import find_namespace_packages, setup
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name="sphinx-kroki",
+    name="sphinxcontrib-kroki",
     version="1.0.0",
     author="Martin Hasoň",
     author_email="martin.hason@gmail.com",
     description="Kroki integration into sphinx",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/hason/sphinx-kroki",
-    packages=find_packages(),
+    url="https://github.com/sphinx-contrib/kroki",
+    packages=find_namespace_packages(include=['sphinxcontrib.*']),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
