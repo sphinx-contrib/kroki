@@ -1,7 +1,8 @@
-Sphinx Kroki
-============
+sphinxcontrib-kroki
+===================
 
-Embed PlantUML, DOT, etc. diagrams in your documentation using [kroki](https://kroki.io/).
+Embed PlantUML, DOT, etc. diagrams in your Sphinx-based documentation using
+[kroki](https://kroki.io/).
 
 Instalation
 -----------

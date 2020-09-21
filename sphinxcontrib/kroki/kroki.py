@@ -14,21 +14,37 @@ from sphinx.util.docutils import SphinxDirective
 from sphinx.util.i18n import search_image_for_language
 from sphinx.util.osutil import ensuredir
 
-formats = ('png', 'svg', 'jpeg', 'base64', 'txt', 'utxt')
+formats = ("png", "svg", "jpeg", "base64", "txt", "utxt")
 
-types = ('blockdiag', 'bpmn', 'bytefield', 'seqdiag',
-         'actdiag', 'nwdiag', 'packetdiag', 'rackdiag',
-         'c4plantuml', 'ditaa', 'erd', 'graphviz', 'mermaid',
-         'nomnoml', 'plantuml', 'svgbob', 'vega', 'vegalite',
-         'wavedrom')
+types = (
+    "blockdiag",
+    "bpmn",
+    "bytefield",
+    "seqdiag",
+    "actdiag",
+    "nwdiag",
+    "packetdiag",
+    "rackdiag",
+    "c4plantuml",
+    "ditaa",
+    "erd",
+    "graphviz",
+    "mermaid",
+    "nomnoml",
+    "plantuml",
+    "svgbob",
+    "vega",
+    "vegalite",
+    "wavedrom",
+)
 
 extension_type_map = {
-    '.puml': 'plantuml',
-    '.dot': 'graphviz',
-    '.gv': 'graphviz',
-    '.bpmn': 'bpmn',
-    '.ditaa': 'ditaa',
-    '.bob': 'svgbob',
+    ".puml": "plantuml",
+    ".dot": "graphviz",
+    ".gv": "graphviz",
+    ".bpmn": "bpmn",
+    ".ditaa": "ditaa",
+    ".bob": "svgbob",
 }
 
 
@@ -58,12 +74,12 @@ class Kroki(SphinxDirective):
     optional_arguments = 3
     final_argument_whitespace = False
     option_spec = {
-        'filename': directives.unchanged,
-        'type': type_spec,
-        'format': format_spec,
-        'align': align_spec,
-        'caption': directives.unchanged,
-        'class': directives.class_option,
+        "filename": directives.unchanged,
+        "type": type_spec,
+        "format": format_spec,
+        "align": align_spec,
+        "caption": directives.unchanged,
+        "class": directives.class_option,
     }
 
     def run(self) -> List[Node]:
@@ -81,17 +97,29 @@ class Kroki(SphinxDirective):
             else:
                 filename = argument
 
-        if 'filename' in self.options:
+        if "filename" in self.options:
             if filename is not None:
-                return [document.reporter.warning(
-                    __('Kroki directive cannot have both filename option and '
-                       'a filename argument'), line=self.lineno)]
-            filename = self.options['filename']
+                return [
+                    document.reporter.warning(
+                        __(
+                            "Kroki directive cannot have both filename option and "
+                            "a filename argument"
+                        ),
+                        line=self.lineno,
+                    )
+                ]
+            filename = self.options["filename"]
 
         if source.strip() and filename is not None:
-            return [document.reporter.warning(
-                __('Kroki directive cannot have both content and '
-                   'a filename argument'), line=self.lineno)]
+            return [
+                document.reporter.warning(
+                    __(
+                        "Kroki directive cannot have both content and "
+                        "a filename argument"
+                    ),
+                    line=self.lineno,
+                )
+            ]
 
         if filename is not None:
             argument = search_image_for_language(filename, self.env)
@@ -101,62 +129,96 @@ class Kroki(SphinxDirective):
                 with open(filename, encoding="utf-8") as fp:
                     source = fp.read()
             except OSError:
-                return [document.reporter.warning(
-                    __('External kroki file %r not found or reading '
-                       'it failed') % filename, line=self.lineno)]
+                return [
+                    document.reporter.warning(
+                        __(
+                            "External kroki file %r not found or reading "
+                            "it failed"
+                        )
+                        % filename,
+                        line=self.lineno,
+                    )
+                ]
 
         if not source.strip():
-            return [document.reporter.warning(
-                __('Ignoring kroki directive without content. It is necessary to specify '
-                   'filename argument/option or content'),
-                line=self.lineno)]
+            return [
+                document.reporter.warning(
+                    __(
+                        "Ignoring kroki directive without content. It is necessary to specify "
+                        "filename argument/option or content"
+                    ),
+                    line=self.lineno,
+                )
+            ]
 
-        if 'type' in self.options:
+        if "type" in self.options:
             if diagram_type is not None:
-                return [document.reporter.warning(
-                    __('Kroki directive cannot have both type option and '
-                       'a type argument'), line=self.lineno)]
-            diagram_type = self.options['type']
+                return [
+                    document.reporter.warning(
+                        __(
+                            "Kroki directive cannot have both type option and "
+                            "a type argument"
+                        ),
+                        line=self.lineno,
+                    )
+                ]
+            diagram_type = self.options["type"]
 
         if diagram_type is None:
             if filename is not None:
-                diagram_type = extension_type_map.get(path.splitext(filename)[1])
+                diagram_type = extension_type_map.get(
+                    path.splitext(filename)[1]
+                )
 
             if diagram_type is None:
-                return [document.reporter.warning(
-                    __('Kroki directive has to define diagram type.'),
-                    line=self.lineno)]
+                return [
+                    document.reporter.warning(
+                        __("Kroki directive has to define diagram type."),
+                        line=self.lineno,
+                    )
+                ]
 
-        if 'format' in self.options:
+        if "format" in self.options:
             if output_format is not None:
-                return [document.reporter.warning(
-                    __('Kroki directive cannot have both format option and '
-                       'a format argument'), line=self.lineno)]
-            output_format = self.options['format']
+                return [
+                    document.reporter.warning(
+                        __(
+                            "Kroki directive cannot have both format option and "
+                            "a format argument"
+                        ),
+                        line=self.lineno,
+                    )
+                ]
+            output_format = self.options["format"]
 
         node = kroki()
 
-        node['type'] = diagram_type
+        node["type"] = diagram_type
         if output_format is not None:
-            node['format'] = output_format
-        node['code'] = source
-        node['options'] = {'docname': self.env.docname}
-        if 'align' in self.options:
-            node['align'] = self.options['align']
-        if 'class' in self.options:
-            node['classes'] = self.options['class']
+            node["format"] = output_format
+        node["code"] = source
+        node["options"] = {"docname": self.env.docname}
+        if "align" in self.options:
+            node["align"] = self.options["align"]
+        if "class" in self.options:
+            node["classes"] = self.options["class"]
 
-        if 'caption' not in self.options:
+        if "caption" not in self.options:
             self.add_name(node)
             return [node]
         else:
-            figure = figure_wrapper(self, node, self.options['caption'])
+            figure = figure_wrapper(self, node, self.options["caption"])
             self.add_name(figure)
             return [figure]
 
 
-def render_kroki(builder: Builder, diagram_type: str, diagram_source: str,
-                 output_format: str, prefix: str = 'kroki') -> Tuple[str, str]:
+def render_kroki(
+    builder: Builder,
+    diagram_type: str,
+    diagram_source: str,
+    output_format: str,
+    prefix: str = "kroki",
+) -> Tuple[str, str]:
     kroki_url: str = builder.config.kroki_url
     payload: Dict[str, str] = {
         "diagram_source": diagram_source,
@@ -165,7 +227,7 @@ def render_kroki(builder: Builder, diagram_type: str, diagram_source: str,
     }
 
     hashkey = (str(kroki_url) + str(payload)).encode()
-    fname = '%s-%s.%s' % (prefix, sha1(hashkey).hexdigest(), output_format)
+    fname = "%s-%s.%s" % (prefix, sha1(hashkey).hexdigest(), output_format)
     relfn = posixpath.join(builder.imgpath, fname)
     outfn = path.join(builder.outdir, builder.imagedir, fname)
 
@@ -177,12 +239,14 @@ def render_kroki(builder: Builder, diagram_type: str, diagram_source: str,
 
         response = requests.post(kroki_url, json=payload, stream=True)
         response.raise_for_status()
-        with open(outfn, mode='wb') as f:
+        with open(outfn, mode="wb") as f:
             for chunk in response.iter_content(chunk_size=128):
                 f.write(chunk)
 
         return relfn, outfn
     except requests.exceptions.RequestException as e:
-        raise KrokiError(__('kroki did not produce a diagram')) from e
+        raise KrokiError(__("kroki did not produce a diagram")) from e
     except IOError as e:
-        raise KrokiError(__('Unable to write diagram to file %r') % outfn) from e
+        raise KrokiError(
+            __("Unable to write diagram to file %r") % outfn
+        ) from e

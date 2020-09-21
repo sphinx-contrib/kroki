@@ -31,11 +31,11 @@ task_tests()( pytest "$@" )
 
 # Fix code style
 # @service python
-task_cs()( black . )
+task_cs()( black sphinxcontrib tests )
 
 # Analyse code
 # @service python
-task_analyse()( mypy sphinxcontrib.kroki )
+task_analyse()( mypy sphinxcontrib )
 
 # Remove all containers in project (use -v to remove volumes also)
 task_clean()( _docker_compose down --remove-orphans  "$@" )

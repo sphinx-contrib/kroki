@@ -12,7 +12,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sphinx-contrib/kroki",
-    packages=find_namespace_packages(include=['sphinxcontrib.*']),
+    packages=find_namespace_packages(include=["sphinxcontrib.*"]),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
@@ -24,7 +24,7 @@ setup(
         "requests>=2.4.2",
     ],
     extras_require={
-        "code": ["black", "mypy"],
+        "code": ["black", "flake8", "mypy"],
         "test": [
             "coverage",
             "pytest",

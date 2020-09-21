@@ -16,7 +16,7 @@ requires = [
 ]
 
 [tool.flit.metadata.requires-extra]
-code = ["black", "mypy"]
+code = ["black", "flake8", "mypy"]
 test = [
     "coverage",
     "pytest",
@@ -27,3 +27,6 @@ test = [
 markers = [
     "sphinx: run test in sphinx project",
 ]
+
+[tool.black]
+line-length = 79
