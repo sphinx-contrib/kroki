@@ -54,17 +54,23 @@ Load a diagram from a file and show as png:
 - `:format:` The output format of the diagram (default svg).
 - `:type:` The type of the diagram (blockdiag, bpmn, bytefield, seqdiag,
   actdiag, nwdiag, packetdiag, rackdiag, c4plantuml, ditaa, erd, graphviz, mermaid,
-  nomnoml, plantuml, svgbob, vega, vegalite, wavedrom)
+  nomnoml, plantuml, svgbob, umlet, vega, vegalite, wavedrom)
 
 The diagram type can be automatically derived from the file extension:
 
 Extension  | Type
 ---------- | ----
+*.bob      | svgbob
+*.bpmn     | bpmn
+*.ditaa    | ditaa
 *.dot      | graphviz
 *.gv       | graphviz
-*.bpmn     | bpmn
+*.iuml     | plantuml
+*.plantuml | plantuml
+*.pu       | plantuml
 *.puml     | plantuml
-*.ditaa    | ditaa
+*.uxf      | umlet
+*.wsd      | plantuml
 
 Configuration
 -------------

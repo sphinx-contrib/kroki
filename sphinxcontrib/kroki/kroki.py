@@ -33,18 +33,24 @@ types = (
     "nomnoml",
     "plantuml",
     "svgbob",
+    "umlet",
     "vega",
     "vegalite",
     "wavedrom",
 )
 
 extension_type_map = {
-    ".puml": "plantuml",
-    ".dot": "graphviz",
-    ".gv": "graphviz",
+    ".bob": "svgbob",
     ".bpmn": "bpmn",
     ".ditaa": "ditaa",
-    ".bob": "svgbob",
+    ".dot": "graphviz",
+    ".gv": "graphviz",
+    ".iuml": "plantuml",
+    ".plantuml": "plantuml",
+    ".pu": "plantuml",
+    ".puml": "plantuml",
+    ".uxf": "umlet",
+    ".wsd": "plantuml",
 }
 
 
