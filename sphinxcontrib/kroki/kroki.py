@@ -1,6 +1,5 @@
-import posixpath
 from hashlib import sha1
-from os import path
+from pathlib import Path
 from typing import Any, Dict, List, Tuple, Optional
 import requests
 
@@ -12,50 +11,55 @@ from sphinx.ext.graphviz import figure_wrapper, graphviz, align_spec
 from sphinx.locale import __
 from sphinx.util.docutils import SphinxDirective
 from sphinx.util.i18n import search_image_for_language
-from sphinx.util.osutil import ensuredir
 
 formats = ("png", "svg", "jpeg", "base64", "txt", "utxt")
 
-types = (
-    "blockdiag",
-    "bpmn",
-    "bytefield",
-    "seqdiag",
-    "actdiag",
-    "nwdiag",
-    "packetdiag",
-    "rackdiag",
-    "c4plantuml",
-    "ditaa",
-    "erd",
-    "graphviz",
-    "mermaid",
-    "nomnoml",
-    "plantuml",
-    "svgbob",
-    "umlet",
-    "vega",
-    "vegalite",
-    "wavedrom",
-)
+types = {
+    "actdiag": "actdiag",
+    "blockdiag": "blockdiag",
+    "bpmn": "bpmn",
+    "bytefield": "bytefield",
+    "c4plantuml": "c4plantuml",
+    "dot": "graphviz",
+    "ditaa": "ditaa",
+    "er": "erd",
+    "erd": "erd",
+    "excalidraw": "excalidraw",
+    "graphviz": "graphviz",
+    "mermaid": "mermaid",
+    "nomnoml": "nomnoml",
+    "nwdiag": "nwdiag",
+    "packetdiag": "packetdiag",
+    "plantuml": "plantuml",
+    "rackdiag": "rackdiag",
+    "seqdiag": "seqdiag",
+    "svgbob": "svgbob",
+    "umlet": "umlet",
+    "vega": "vega",
+    "vegalite": "vegalite",
+    "wavedrom": "wavedrom",
+}
 
 extension_type_map = {
-    ".bob": "svgbob",
-    ".bpmn": "bpmn",
-    ".ditaa": "ditaa",
-    ".dot": "graphviz",
-    ".gv": "graphviz",
-    ".iuml": "plantuml",
-    ".plantuml": "plantuml",
-    ".pu": "plantuml",
-    ".puml": "plantuml",
-    ".uxf": "umlet",
-    ".wsd": "plantuml",
+    "bob": "svgbob",
+    "c4": "c4plantuml",
+    "c4puml": "c4plantuml",
+    "dot": "graphviz",
+    "er": "erd",
+    "gv": "graphviz",
+    "iuml": "plantuml",
+    "pu": "plantuml",
+    "puml": "plantuml",
+    "uxf": "umlet",
+    "vg": "vega",
+    "vgl": "vegalite",
+    "vl": "vegalite",
+    "wsd": "plantuml",
 }
 
 
 def type_spec(argument: Any) -> str:
-    return directives.choice(argument, types)
+    return directives.choice(argument, types.keys())
 
 
 def format_spec(argument: Any) -> str:
@@ -97,7 +101,7 @@ class Kroki(SphinxDirective):
 
         for argument in self.arguments:
             if argument in types:
-                diagram_type = argument
+                diagram_type = types.get(argument)
             elif argument in formats:
                 output_format = argument
             else:
@@ -168,13 +172,12 @@ class Kroki(SphinxDirective):
                         line=self.lineno,
                     )
                 ]
-            diagram_type = self.options["type"]
+            diagram_type = types.get(self.options["type"])
 
         if diagram_type is None:
             if filename is not None:
-                diagram_type = extension_type_map.get(
-                    path.splitext(filename)[1]
-                )
+                suffix = Path(filename).suffix.lstrip(".")
+                diagram_type = extension_type_map.get(suffix, types.get(suffix))
 
             if diagram_type is None:
                 return [
@@ -234,18 +237,18 @@ def render_kroki(
 
     hashkey = (str(kroki_url) + str(payload)).encode()
     fname = "%s-%s.%s" % (prefix, sha1(hashkey).hexdigest(), output_format)
-    relfn = posixpath.join(builder.imgpath, fname)
-    outfn = path.join(builder.outdir, builder.imagedir, fname)
+    relfn = Path(builder.imgpath).joinpath(fname)
+    outfn = Path(builder.outdir).joinpath(builder.imagedir, fname)
 
-    if path.isfile(outfn):
+    if outfn.is_file():
         return relfn, outfn
 
     try:
-        ensuredir(path.dirname(outfn))
+        outfn.parent.mkdir(parents=True, exist_ok=True)
 
         response = requests.post(kroki_url, json=payload, stream=True)
         response.raise_for_status()
-        with open(outfn, mode="wb") as f:
+        with outfn.open(mode="wb") as f:
             for chunk in response.iter_content(chunk_size=128):
                 f.write(chunk)
 
