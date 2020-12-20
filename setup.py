@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="sphinxcontrib-kroki",
-    version="1.1.1",
+    version="1.2.0",
     author="Martin Hasoň",
     author_email="martin.hason@gmail.com",
     description="Kroki integration into sphinx",
@@ -29,6 +29,8 @@ setup(
             "coverage",
             "pytest",
             "pytest-cov",
+        ],
+        "extra": [
         ],
     },
 )

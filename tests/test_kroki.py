@@ -22,76 +22,28 @@ def get_content(app: Sphinx) -> str:
 )
 def test_kroki_html(app, status, warning):
     content = get_content(app)
-
     html = (
-        r'figure[^>]*?(?: align-default)?" .*?>\s*'
-        r'<div class="kroki kroki-plantuml"><a .+?><img .+?/></a>.*?'
-        r'<span class="caption-text">caption of diagram</span>.*</p>'
-    )
-    assert re.search(html, content, re.S)
-
-    html = r'<p>Hello <div class="kroki kroki-plantuml"><a .*?><img .*?/></a></div>\n kroki world'
-    assert re.search(html, content, re.S)
-
-    html = (
-        '<div class="kroki kroki-mermaid graph"><a href.+?<img .+?/></a></div>'
-    )
-    assert re.search(html, content, re.S)
-
-    html = (
-        r'<div class="kroki kroki-graphviz">\s*' r"<a .*?><img .*?/></a></div>"
-    )
-    assert re.search(html, content, re.S)
-
-    html = (
-        r'figure[^>]*?align-center" .*?>\s*?'
-        r'<div class="kroki kroki-plantuml"><a .*?><img .*? alt="foo -&gt; bar" /></a></div>.*?'
-        r'<span class="caption-text">on <em>center</em></span>'
-    )
-    assert re.search(html, content, re.S)
-
-    html = (
-        '<div class="kroki kroki-ditaa"><div align="right" class="align-right">.*?'
-        r"<a .*?><img .*?/></a></div>\s*?</div>"
-    )
-    assert re.search(html, content, re.S)
-
-
-@pytest.mark.sphinx(
-    "html",
-    testroot="kroki",
-    confoverrides={"kroki_inline_svg": True, "master_doc": "index"},
-)
-def test_kroki_html_inline_svg(app, status, warning):
-    content = get_content(app)
-
-    html = (
-        r'figure[^>]*?(?: align-default)?" .*?>\s*'
-        r'<div class="kroki kroki-plantuml">.+?<svg.+?</svg>.*?'
+        r'figure[^>]*?(?:kroki kroki-plantuml align-default)?" .*?>\s*'
+        r'<img alt="bar -&gt; baz" class="kroki kroki-plantuml" .+?/>.*?'
         r'<span class="caption-text">caption of diagram</span>.*?</p>'
     )
     assert re.search(html, content, re.S)
 
-    html = r'<p>Hello <div class="kroki kroki-plantuml">.+?<svg .*?</svg></div>\n kroki world'
+    html = r'<p>Hello <img alt="bar -&gt; baz" class="kroki kroki-plantuml" .*?/> kroki world</p>'
     assert re.search(html, content, re.S)
 
-    html = '<div class="kroki kroki-mermaid graph"><svg id="mermaid.+?</svg></div>'
+    html = r'<img .+?class="kroki kroki-mermaid graph" .+?/>'
+    assert re.search(html, content, re.S)
+
+    html = r'<img .+?class="kroki kroki-graphviz" .*?/>'
     assert re.search(html, content, re.S)
 
     html = (
-        r'<div class="kroki kroki-graphviz">\s*' r"<a .*?><img .*?/></a></div>"
-    )
-    assert re.search(html, content, re.S)
-
-    html = (
-        r'figure[^>]*?align-center" .*?>\s*?'
-        r'<div class="kroki kroki-plantuml"><a .*?><img .*? alt="foo -&gt; bar" /></a></div>.*?'
+        r'figure[^>]*?kroki kroki-plantuml align-center" .*?>\s*?'
+        r'<img alt="foo -&gt; bar ".*?/>.*?'
         r'<span class="caption-text">on <em>center</em></span>'
     )
     assert re.search(html, content, re.S)
 
-    html = (
-        '<div class="kroki kroki-ditaa"><div align="right" class="align-right">.*?'
-        r"<svg .*?</svg></div>\s*?</div>"
-    )
+    html = r'<img.*?class="kroki kroki-ditaa align-right".*?/>'
     assert re.search(html, content, re.S)

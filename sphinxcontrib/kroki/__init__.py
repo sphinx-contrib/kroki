@@ -8,16 +8,17 @@
 
 from typing import Any, Dict
 from sphinx.application import Sphinx
-from .kroki import kroki, Kroki
-from .writers import html_visit_kroki
+from .kroki import Kroki
+from .transform import KrokiToImageTransform, FixKrokiImagePathTransform
 import pkg_resources
 
 __version__ = pkg_resources.get_distribution("sphinxcontrib-kroki").version
 
 
 def setup(app: Sphinx) -> Dict[str, Any]:
-    app.add_node(kroki, html=(html_visit_kroki, None))
     app.add_directive("kroki", Kroki)
+    app.add_transform(KrokiToImageTransform)
+    app.add_post_transform(FixKrokiImagePathTransform)
     app.add_config_value("kroki_url", "https://kroki.io", "env")
     app.add_config_value("kroki_output_format", "svg", "env")
     app.add_config_value("kroki_inline_svg", False, "env")

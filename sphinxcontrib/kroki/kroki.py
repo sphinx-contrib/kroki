@@ -210,16 +210,19 @@ class Kroki(SphinxDirective):
             node["format"] = output_format
         node["code"] = source
         node["options"] = {"docname": self.env.docname}
+
+        classes = ["kroki", "kroki-{}".format(diagram_type)]
+        node["classes"] = classes + self.options.get("class", [])
         if "align" in self.options:
             node["align"] = self.options["align"]
-        if "class" in self.options:
-            node["classes"] = self.options["class"]
 
         if "caption" not in self.options:
             self.add_name(node)
             return [node]
         else:
-            figure = figure_wrapper(self, node, self.options["caption"])
+            node["caption"] = self.options["caption"]
+            figure = figure_wrapper(self, node, node["caption"])
+            figure["classes"] = classes
             self.add_name(figure)
             return [figure]
 
