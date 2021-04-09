@@ -21,6 +21,10 @@ task_init() ( python3 -m venv ./venv/ ) # --system-site-packages
 # @service python
 task_pip()( pip3 "$@" )
 
+# Publish package
+# @service python
+task_publish()( python setup.py sdist && twine check dist/* && twine upload dist/* ) # flit publish
+
 # Run flit
 # @service python
 task_flit()( flit "$@" )
