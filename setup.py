@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="sphinxcontrib-kroki",
-    version="1.0.0",
+    version="1.1.1",
     author="Martin Hasoň",
     author_email="martin.hason@gmail.com",
     description="Kroki integration into sphinx",
