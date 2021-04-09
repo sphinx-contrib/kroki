@@ -3,11 +3,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple, Optional
 import requests
 
-from docutils.nodes import Node
+from docutils.nodes import Element, General, Inline, Node
 from docutils.parsers.rst import directives
 from sphinx.builders import Builder
 from sphinx.errors import SphinxError
-from sphinx.ext.graphviz import figure_wrapper, graphviz, align_spec
+from sphinx.ext.graphviz import align_spec, figure_wrapper
 from sphinx.locale import __
 from sphinx.util.docutils import SphinxDirective
 from sphinx.util.i18n import search_image_for_language
@@ -71,7 +71,7 @@ class KrokiError(SphinxError):
     category = "Kroki error"
 
 
-class kroki(graphviz):
+class kroki(General, Inline, Element):
     pass
 
 
@@ -178,7 +178,9 @@ class Kroki(SphinxDirective):
         if diagram_type is None:
             if filename is not None:
                 suffix = Path(filename).suffix.lstrip(".")
-                diagram_type = extension_type_map.get(suffix, types.get(suffix))
+                diagram_type = extension_type_map.get(
+                    suffix, types.get(suffix)
+                )
 
             if diagram_type is None:
                 return [
@@ -228,7 +230,7 @@ def render_kroki(
     diagram_source: str,
     output_format: str,
     prefix: str = "kroki",
-) -> Tuple[str, str]:
+) -> Tuple[Path, Path]:
     kroki_url: str = builder.config.kroki_url
     payload: Dict[str, str] = {
         "diagram_source": diagram_source,
