@@ -24,9 +24,9 @@ def test_kroki_html(app, status, warning):
     content = get_content(app)
 
     html = (
-        r'<div class="figure(?: align-default)?" .*?>\s*'
+        r'figure[^>]*?(?: align-default)?" .*?>\s*'
         r'<div class="kroki kroki-plantuml"><a .+?><img .+?/></a>.*?'
-        r'<p class="caption"><span class="caption-text">caption of diagram</span>.*</p>\s*</div>'
+        r'<span class="caption-text">caption of diagram</span>.*</p>'
     )
     assert re.search(html, content, re.S)
 
@@ -44,9 +44,9 @@ def test_kroki_html(app, status, warning):
     assert re.search(html, content, re.S)
 
     html = (
-        r'<div class="figure align-center" .*?>\s*?'
-        r'<div class="kroki kroki-plantuml"><a .*?><img .*? alt="foo -&gt; bar" /></a></div>\s*?'
-        r'<p class="caption"><span class="caption-text">on <em>center</em></span>'
+        r'figure[^>]*?align-center" .*?>\s*?'
+        r'<div class="kroki kroki-plantuml"><a .*?><img .*? alt="foo -&gt; bar" /></a></div>.*?'
+        r'<span class="caption-text">on <em>center</em></span>'
     )
     assert re.search(html, content, re.S)
 
@@ -66,9 +66,9 @@ def test_kroki_html_inline_svg(app, status, warning):
     content = get_content(app)
 
     html = (
-        r'<div class="figure(?: align-default)?" .*?>\s*'
+        r'figure[^>]*?(?: align-default)?" .*?>\s*'
         r'<div class="kroki kroki-plantuml">.+?<svg.+?</svg>.*?'
-        r'<p class="caption"><span class="caption-text">caption of diagram</span>.*</p>\s*</div>'
+        r'<span class="caption-text">caption of diagram</span>.*?</p>'
     )
     assert re.search(html, content, re.S)
 
@@ -84,9 +84,9 @@ def test_kroki_html_inline_svg(app, status, warning):
     assert re.search(html, content, re.S)
 
     html = (
-        r'<div class="figure align-center" .*?>\s*?'
-        r'<div class="kroki kroki-plantuml"><a .*?><img .*? alt="foo -&gt; bar" /></a></div>\s*?'
-        r'<p class="caption"><span class="caption-text">on <em>center</em></span>'
+        r'figure[^>]*?align-center" .*?>\s*?'
+        r'<div class="kroki kroki-plantuml"><a .*?><img .*? alt="foo -&gt; bar" /></a></div>.*?'
+        r'<span class="caption-text">on <em>center</em></span>'
     )
     assert re.search(html, content, re.S)
 
