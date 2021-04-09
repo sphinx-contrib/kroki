@@ -30,6 +30,7 @@ types = {
     "nomnoml": "nomnoml",
     "nwdiag": "nwdiag",
     "packetdiag": "packetdiag",
+    "pikchr": "pikchr",
     "plantuml": "plantuml",
     "rackdiag": "rackdiag",
     "seqdiag": "seqdiag",
