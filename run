@@ -17,10 +17,6 @@ task_deps__latest()( _run pip install --ignore-installed --upgrade -e .[code,tes
 # @service python
 task_init()( python3 -m venv ./venv/ ) # --system-site-packages
 
-# Publish package
-# @service python
-task_publish()( python setup.py sdist && flit publish )
-
 # Run pip
 # @service python
 task_pip()( pip3 "$@" )

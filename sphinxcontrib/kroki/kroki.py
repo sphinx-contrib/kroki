@@ -1,6 +1,6 @@
 from hashlib import sha1
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Optional
 import requests
 
 from docutils.nodes import Element, General, Inline, Node
@@ -233,7 +233,7 @@ def render_kroki(
     diagram_source: str,
     output_format: str,
     prefix: str = "kroki",
-) -> Tuple[Path, Path]:
+) -> Path:
     kroki_url: str = builder.config.kroki_url
     payload: Dict[str, str] = {
         "diagram_source": diagram_source,
@@ -243,11 +243,10 @@ def render_kroki(
 
     hashkey = (str(kroki_url) + str(payload)).encode()
     fname = "%s-%s.%s" % (prefix, sha1(hashkey).hexdigest(), output_format)
-    relfn = Path(builder.imgpath).joinpath(fname)
     outfn = Path(builder.outdir).joinpath(builder.imagedir, fname)
 
     if outfn.is_file():
-        return relfn, outfn
+        return outfn
 
     try:
         outfn.parent.mkdir(parents=True, exist_ok=True)
@@ -258,7 +257,7 @@ def render_kroki(
             for chunk in response.iter_content(chunk_size=128):
                 f.write(chunk)
 
-        return relfn, outfn
+        return outfn
     except requests.exceptions.RequestException as e:
         raise KrokiError(__("kroki did not produce a diagram")) from e
     except IOError as e:
