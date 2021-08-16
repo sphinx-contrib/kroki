@@ -85,12 +85,13 @@ class Kroki(SphinxDirective):
     optional_arguments = 3
     final_argument_whitespace = False
     option_spec = {
-        "filename": directives.unchanged,
-        "type": type_spec,
-        "format": format_spec,
         "align": align_spec,
         "caption": directives.unchanged,
         "class": directives.class_option,
+        "filename": directives.unchanged,
+        "format": format_spec,
+        "name": directives.unchanged,
+        "type": type_spec
     }
 
     def run(self) -> List[Node]:
