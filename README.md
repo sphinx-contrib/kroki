@@ -47,14 +47,15 @@ Load a diagram from a file and show as png:
 
 ### Options
 
-- `:align:` The horizontal alignment of the diagram (left, center or right).
-- `:caption:` The caption of the diagram.
-- `:class:` The class names (a list of class names separeted by spaces).
-- `:filename:` The path to the file with the diagram.
-- `:format:` The output format of the diagram (default svg).
+- `:align:` The horizontal alignment of the diagram (left, center or right);
+- `:caption:` The caption of the diagram;
+- `:class:` The class names (a list of class names separeted by spaces);
+- `:filename:` The path to the file with the diagram;
+- `:format:` The output format of the diagram (default svg);
+- `:name:` The hyperlink reference to the element;
 - `:type:` The type of the diagram (blockdiag, bpmn, bytefield, seqdiag,
   actdiag, nwdiag, packetdiag, rackdiag, c4plantuml, ditaa, erd, excalidraw,
-  graphviz, mermaid, nomnoml, plantuml, svgbob, umlet, vega, vegalite, wavedrom)
+  graphviz, mermaid, nomnoml, plantuml, svgbob, umlet, vega, vegalite, wavedrom).
 
 The diagram type can be automatically derived from the file extension (as same as `type`).
 Additional supported extensions:
