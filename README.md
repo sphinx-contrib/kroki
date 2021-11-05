@@ -53,9 +53,10 @@ Load a diagram from a file and show as png:
 - `:filename:` The path to the file with the diagram;
 - `:format:` The output format of the diagram (default svg);
 - `:name:` The hyperlink reference to the element;
-- `:type:` The type of the diagram (blockdiag, bpmn, bytefield, seqdiag,
-  actdiag, nwdiag, packetdiag, rackdiag, c4plantuml, ditaa, erd, excalidraw,
-  graphviz, mermaid, nomnoml, plantuml, svgbob, umlet, vega, vegalite, wavedrom).
+- `:type:` The type of the diagram (actdiag, blockdiag, bpmn, bytefield,
+  c4plantuml, dot, ditaa, er, erd, excalidraw, graphviz, mermaid, nomnoml,
+  nwdiag, packetdiag, pikchr, plantuml, rackdiag, structurizr, seqdiag,
+  svgbob, umlet, vega, vegalite, wavedrom).
 
 The diagram type can be automatically derived from the file extension (as same as `type`).
 Additional supported extensions:
@@ -66,6 +67,7 @@ Extension  | Type
 *.c4       | c4plantuml
 *.c4puml   | c4plantuml
 *.dot      | graphviz
+*.dsl      | structurizr
 *.er       | erd
 *.gv       | graphviz
 *.iuml     | plantuml
