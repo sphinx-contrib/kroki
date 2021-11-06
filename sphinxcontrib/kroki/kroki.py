@@ -1,7 +1,9 @@
 from hashlib import sha1
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
+
 import requests
+import yaml
 
 from docutils.nodes import Element, General, Inline, Node
 from docutils.parsers.rst import directives
@@ -93,6 +95,7 @@ class Kroki(SphinxDirective):
         "filename": directives.unchanged,
         "format": format_spec,
         "name": directives.unchanged,
+        "options": directives.unchanged,
         "type": type_spec
     }
 
@@ -102,6 +105,7 @@ class Kroki(SphinxDirective):
         filename: Optional[str] = None
         diagram_type: Optional[str] = None
         output_format: Optional[str] = None
+        diagram_options: Optional[Dict] = None
 
         for argument in self.arguments:
             if argument in types:
@@ -206,13 +210,18 @@ class Kroki(SphinxDirective):
                 ]
             output_format = self.options["format"]
 
+        if "options" in self.options:
+            diagram_options = yaml.safe_load(self.options["options"])
+
         node = kroki()
 
         node["type"] = diagram_type
         if output_format is not None:
             node["format"] = output_format
-        node["code"] = source
-        node["options"] = {"docname": self.env.docname}
+        node["source"] = source
+
+        if diagram_options is not None:
+            node["options"] = diagram_options
 
         classes = ["kroki", "kroki-{}".format(diagram_type)]
         node["classes"] = classes + self.options.get("class", [])
@@ -235,12 +244,14 @@ def render_kroki(
     diagram_type: str,
     diagram_source: str,
     output_format: str,
+    diagram_options: Dict[str, Any] = {},
     prefix: str = "kroki",
 ) -> Path:
     kroki_url: str = builder.config.kroki_url
-    payload: Dict[str, str] = {
+    payload: Dict[str, Union[str, Dict]] = {
         "diagram_source": diagram_source,
         "diagram_type": diagram_type,
+        "diagram_options": diagram_options,
         "output_format": output_format,
     }
 

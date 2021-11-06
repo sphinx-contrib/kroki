@@ -53,6 +53,7 @@ Load a diagram from a file and show as png:
 - `:filename:` The path to the file with the diagram;
 - `:format:` The output format of the diagram (default svg);
 - `:name:` The hyperlink reference to the element;
+- `:options:`: The [diagram options](https://docs.kroki.io/kroki/setup/diagram-options/) in yaml format;
 - `:type:` The type of the diagram (actdiag, blockdiag, bpmn, bytefield,
   c4plantuml, dot, ditaa, er, erd, excalidraw, graphviz, mermaid, nomnoml,
   nwdiag, packetdiag, pikchr, plantuml, rackdiag, structurizr, seqdiag,

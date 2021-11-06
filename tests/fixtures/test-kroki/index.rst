@@ -21,6 +21,10 @@ Hello |diagram| kroki world
      A[ Anyone ]
 
 .. kroki:: graphviz graph.dot png
+   :options:
+     layout: neato
+     graph-attribute-label: My favorite graph
+     node-attribute-shape: rect
 
 .. kroki:: png diagram.puml
    :align: center

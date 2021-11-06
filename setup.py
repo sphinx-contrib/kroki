@@ -22,6 +22,7 @@ setup(
     install_requires=[
         "sphinx",
         "requests>=2.4.2",
+        "pyyaml"
     ],
     extras_require={
         "code": ["black", "flake8", "mypy"],

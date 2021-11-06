@@ -17,7 +17,7 @@ class KrokiToImageTransform(SphinxTransform):
         for node in self.document.traverse(kroki):
             img = image()
             img["kroki"] = node
-            img["alt"] = node["code"]
+            img["alt"] = node["source"]
             if "align" in node:
                 img["align"] = node["align"]
             if "class" in node:
@@ -37,15 +37,21 @@ class KrokiToImageTransform(SphinxTransform):
         builder = self.app.builder
         output_format = self.output_format(node)
         diagram_type = node["type"]
-        diagram_source = node["code"]
+        diagram_source = node["source"]
+        diagram_options = node["options"] if "options" in node else {}
 
         try:
             out = render_kroki(
-                builder, diagram_type, diagram_source, output_format, prefix
+                builder,
+                diagram_type,
+                diagram_source,
+                output_format,
+                diagram_options,
+                prefix,
             )
         except KrokiError as exc:
             logger.warning(
-                __("kroki %s diagram (%s) with code %r: %s"),
+                __("kroki %s diagram (%s) with source %r: %s"),
                 diagram_type,
                 output_format,
                 diagram_source,
