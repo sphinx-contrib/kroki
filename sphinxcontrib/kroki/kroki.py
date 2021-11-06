@@ -96,7 +96,7 @@ class Kroki(SphinxDirective):
         "format": format_spec,
         "name": directives.unchanged,
         "options": directives.unchanged,
-        "type": type_spec
+        "type": type_spec,
     }
 
     def run(self) -> List[Node]:
