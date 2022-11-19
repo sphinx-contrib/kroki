@@ -14,6 +14,7 @@ setup(
     url="https://github.com/sphinx-contrib/kroki",
     packages=find_namespace_packages(include=["sphinxcontrib.*"]),
     classifiers=[
+        "Framework :: Sphinx :: Extension",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
