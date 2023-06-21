@@ -32,3 +32,28 @@ Hello |diagram| kroki world
 
 .. kroki:: diagram.ditaa
    :align: right
+
+.. kroki::
+   :type: d2
+
+   # Actors
+   hans: Hans Niemann
+
+   defendants: {
+      mc: Magnus Carlsen
+      playmagnus: Play Magnus Group
+      chesscom: Chess.com
+      naka: Hikaru Nakamura
+
+      mc -> playmagnus: Owns majority
+      playmagnus <-> chesscom: Merger talks
+      chesscom -> naka: Sponsoring
+   }
+
+   # Accusations
+   hans -> defendants: 'sueing for $100M'
+
+   # Claim
+   defendants.naka -> hans: Accused of cheating on his stream
+   defendants.mc -> hans: Lost then withdrew with accusations
+   defendants.chesscom -> hans: 72 page report of cheating
