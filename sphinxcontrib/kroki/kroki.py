@@ -22,6 +22,7 @@ types = {
     "bpmn": "bpmn",
     "bytefield": "bytefield",
     "c4plantuml": "c4plantuml",
+    "d2": "d2",
     "dot": "graphviz",
     "ditaa": "ditaa",
     "er": "erd",
