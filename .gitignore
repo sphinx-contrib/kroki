@@ -1,5 +1,7 @@
 .env
 .runner
+poetry.lock
+.venv
 
 __pycache__/
 *.py[cod]
