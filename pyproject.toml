@@ -17,18 +17,19 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-sphinx = "*"
+python = "^3.8.1"
+sphinx = "^6"
 requests = "^2.4.2"
 pyyaml = "^6.0.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "*"
-flake8 = "*"
-mypy = "*"
-coverage = "*"
-pytest = "*"
-pytest-cov = "*"
+black = "^23.10.1"
+flake8 = "^6.1.0"
+mypy = "^1.6.1"
+coverage = "^7.3.2"
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+
 
 [tool.pytest.ini_options]
 markers = [
