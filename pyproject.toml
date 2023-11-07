@@ -9,7 +9,7 @@ author-email = "martin.hason@gmail.com"
 home-page = "https://github.com/sphinx-contrib/kroki"
 description-file = "README.md"
 classifiers = ["License :: OSI Approved :: MIT License"]
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 requires = [
     "sphinx",
     "requests>=2.4.2",

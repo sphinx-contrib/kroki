@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   python:
-    image: minidocks/python:${PYTHON_VERSION:-3.8}-build
+    image: minidocks/python:${PYTHON_VERSION:-3.12}-build
     volumes:
       - .:$PWD:cached
       - /tmp:/tmp
