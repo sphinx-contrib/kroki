@@ -1,28 +1,35 @@
-[build-system]
-requires = ["setuptools", "flit_core >=2,<4"]
-build-backend = "setuptools.build_meta"
-
-[tool.flit.metadata]
-module = "sphinxcontrib-kroki"
-author = "Martin Hasoň"
-author-email = "martin.hason@gmail.com"
-home-page = "https://github.com/sphinx-contrib/kroki"
-description-file = "README.md"
-classifiers = ["License :: OSI Approved :: MIT License"]
-requires-python = ">=3.6"
-requires = [
-    "sphinx",
-    "requests>=2.4.2",
+[tool.poetry]
+name = "sphinxcontrib-kroki"
+version = "1.3.0"
+description = "Kroki integration into sphinx"
+license = "MIT"
+authors = ["Martin Hasoň <martin.hason@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/sphinx-contrib/kroki"
+classifiers = [
+    "Framework :: Sphinx :: Extension",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+packages = [
+  { include = "sphinxcontrib", from = "src" }
 ]
 
-[tool.flit.metadata.requires-extra]
-code = ["black", "flake8", "mypy"]
-test = [
-    "coverage",
-    "pytest",
-    "pytest-cov",
-]
-extra = []
+[tool.poetry.dependencies]
+python = "^3.8.1"
+sphinx = "^6"
+requests = "^2.4.2"
+pyyaml = "^6.0.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.10.1"
+flake8 = "^6.1.0"
+mypy = "^1.6.1"
+coverage = "^7.3.2"
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+
 
 [tool.pytest.ini_options]
 markers = [
@@ -31,3 +38,8 @@ markers = [
 
 [tool.black]
 line-length = 79
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
