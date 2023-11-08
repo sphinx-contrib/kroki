@@ -4,7 +4,7 @@ sphinxcontrib-kroki
 Embed PlantUML, DOT, etc. diagrams in your Sphinx-based documentation using
 [kroki](https://kroki.io/).
 
-Instalation
+Installation
 -----------
 
 Install this package via pip:

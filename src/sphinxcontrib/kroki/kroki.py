@@ -150,8 +150,7 @@ class Kroki(SphinxDirective):
                 return [
                     document.reporter.warning(
                         __(
-                            "External kroki file %r not found or reading "
-                            "it failed",
+                            "External kroki file %r not found or reading it failed",
                         )
                         % filename,
                         line=self.lineno,
