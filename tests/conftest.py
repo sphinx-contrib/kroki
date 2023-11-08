@@ -1,9 +1,9 @@
 import os
 import shutil
+from pathlib import Path
 
 import docutils
 import pytest
-
 import sphinx
 from sphinx.testing.path import path
 
@@ -14,12 +14,12 @@ collect_ignore = ["fixtures"]
 
 
 @pytest.fixture(scope="session")
-def rootdir():
+def rootdir() -> path:
     return path(__file__).parent.abspath() / "fixtures"
 
 
-def pytest_report_header(config):
-    header = "libraries: Sphinx-%s, docutils-%s" % (
+def pytest_report_header(config) -> str:
+    header = "libraries: Sphinx-{}, docutils-{}".format(
         sphinx.__display_version__,
         docutils.__version__,
     )
@@ -29,16 +29,16 @@ def pytest_report_header(config):
     return header
 
 
-def _initialize_test_directory(session):
+def _initialize_test_directory(_session: pytest.Session) -> None:
     if "SPHINX_TEST_TEMPDIR" in os.environ:
-        tempdir = os.path.abspath(os.getenv("SPHINX_TEST_TEMPDIR"))
+        tempdir = Path.resolve(os.getenv("SPHINX_TEST_TEMPDIR"))
         print("Temporary files will be placed in %s." % tempdir)
 
-        if os.path.exists(tempdir):
+        if tempdir.exists():
             shutil.rmtree(tempdir)
 
-        os.makedirs(tempdir)
+        tempdir.mkdir(parents=True)
 
 
-def pytest_sessionstart(session):
+def pytest_sessionstart(session: pytest.Session) -> None:
     _initialize_test_directory(session)

@@ -1,10 +1,10 @@
-"""
-    test_kroki
-    ~~~~~~~~~~~~~~~~
-    Test the kroki extension.
+"""test_kroki
+~~~~~~~~~~~~~~~~
+Test the kroki extension.
 """
 
 import re
+
 import pytest
 from sphinx.application import Sphinx
 from sphinx.testing.path import path
@@ -18,9 +18,11 @@ def get_content(app: Sphinx) -> str:
 
 
 @pytest.mark.sphinx(
-    "html", testroot="kroki", confoverrides={"master_doc": "index"}
+    "html",
+    testroot="kroki",
+    confoverrides={"master_doc": "index"},
 )
-def test_kroki_html(app, status, warning):
+def test_kroki_html(app: Sphinx, _status, _warning):
     content = get_content(app)
     html = (
         r'figure[^>]*?(?:kroki kroki-plantuml align-default)?" .*?>\s*'
@@ -29,7 +31,10 @@ def test_kroki_html(app, status, warning):
     )
     assert re.search(html, content, re.S)
 
-    html = r'<p>Hello <img alt="bar -&gt; baz" class="kroki kroki-plantuml" .*?/> kroki world</p>'
+    html = (
+        r'<p>Hello <img alt="bar -&gt; baz" class="kroki kroki-plantuml" .*?/>'
+        r" kroki world</p>"
+    )
     assert re.search(html, content, re.S)
 
     html = r'<img .+?class="kroki kroki-mermaid graph" .+?/>'
