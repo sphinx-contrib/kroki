@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from hashlib import sha1
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, ClassVar, cast
 
 import requests
 import yaml
@@ -77,7 +77,7 @@ class KrokiError(SphinxError):
     category = "Kroki error"
 
 
-class kroki(General, Inline, Element):  # noqa: N801
+class kroki(General, Inline, Element):  # type: ignore[misc] # noqa: N801
     pass
 
 
@@ -88,7 +88,7 @@ class Kroki(SphinxDirective):
     required_arguments = 0
     optional_arguments = 3
     final_argument_whitespace = False
-    option_spec = {
+    option_spec: ClassVar = {
         "align": align_spec,
         "caption": directives.unchanged,
         "class": directives.class_option,
@@ -144,8 +144,7 @@ class Kroki(SphinxDirective):
             rel_filename, filename = self.env.relfn2path(argument)
             self.env.note_dependency(rel_filename)
             try:
-                with open(filename, encoding="utf-8") as fp:
-                    source = fp.read()
+                source = Path(filename).read_text(encoding="utf-8")
             except OSError:
                 return [
                     document.reporter.warning(
@@ -245,14 +244,14 @@ def render_kroki(
     diagram_type: str,
     diagram_source: str,
     output_format: str,
-    diagram_options: dict[str, Any] = {},
+    diagram_options: dict[str, Any] | None = None,
     prefix: str = "kroki",
 ) -> Path:
     kroki_url: str = builder.config.kroki_url
-    payload: dict[str, str | dict] = {
+    payload: dict[str, str | dict[str, Any]] = {
         "diagram_source": diagram_source,
         "diagram_type": diagram_type,
-        "diagram_options": diagram_options,
+        "diagram_options": diagram_options or {},
         "output_format": output_format,
     }
 

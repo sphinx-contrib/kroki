@@ -13,8 +13,8 @@ from sphinx.testing.path import path
 def get_content(app: Sphinx) -> str:
     app.builder.build_all()
 
-    index = app.outdir / "index.html"
-    return index.read_text() if "read_text" in path.__dict__ else index.text()
+    index = app.outdir / "index.html"  # type: ignore[operator]
+    return index.read_text() if "read_text" in path.__dict__ else index.text()  # type: ignore[no-any-return]
 
 
 @pytest.mark.sphinx(
@@ -22,7 +22,7 @@ def get_content(app: Sphinx) -> str:
     testroot="kroki",
     confoverrides={"master_doc": "index"},
 )
-def test_kroki_html(app: Sphinx, status, warning):
+def test_kroki_html(app: Sphinx) -> None:
     content = get_content(app)
     html = (
         r'figure[^>]*?(?:kroki kroki-plantuml align-default)?" .*?>\s*'

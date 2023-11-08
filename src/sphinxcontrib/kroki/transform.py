@@ -1,4 +1,4 @@
-from os.path import dirname, relpath
+from os.path import relpath
 from pathlib import Path
 from typing import Any
 
@@ -14,7 +14,7 @@ class KrokiToImageTransform(SphinxTransform):
     default_priority = 10
 
     def apply(self, **_kwargs: Any) -> None:
-        source = dirname(self.document["source"])
+        source = Path(self.document["source"]).parent
         for node in self.document.traverse(kroki):
             img = image()
             img["kroki"] = node
@@ -32,7 +32,7 @@ class KrokiToImageTransform(SphinxTransform):
     def output_format(self, node: kroki) -> str:
         builder = self.app.builder
 
-        return node.get("format", builder.config.kroki_output_format)
+        return node.get("format", builder.config.kroki_output_format)  # type: ignore[no-any-return]
 
     def render(self, node: kroki, prefix: str = "kroki") -> Path:
         builder = self.app.builder

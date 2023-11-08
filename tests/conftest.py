@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import os
 import shutil
 from pathlib import Path
+from typing import Any
 
 import docutils
 import pytest
@@ -18,7 +21,7 @@ def rootdir() -> path:
     return path(__file__).parent.abspath() / "fixtures"
 
 
-def pytest_report_header(config) -> str:
+def pytest_report_header(config: dict[str, Any]) -> str:
     header = "libraries: Sphinx-{}, docutils-{}".format(
         sphinx.__display_version__,
         docutils.__version__,
@@ -30,8 +33,9 @@ def pytest_report_header(config) -> str:
 
 
 def _initialize_test_directory(_session: pytest.Session) -> None:
-    if "SPHINX_TEST_TEMPDIR" in os.environ:
-        tempdir = Path.resolve(os.getenv("SPHINX_TEST_TEMPDIR"))
+    tempdir_str = os.getenv("SPHINX_TEST_TEMPDIR")
+    if tempdir_str:
+        tempdir = Path(tempdir_str).resolve()
         print("Temporary files will be placed in %s." % tempdir)
 
         if tempdir.exists():

@@ -22,11 +22,11 @@ repos:
          - --fix
          - --preview
 
-  # - repo: local
-  #   hooks:
-  #     - id: mypy
-  #       name: mypy
-  #       entry: poetry run mypy
-  #       language: system
-  #       require_serial: true
-  #       pass_filenames: false
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy
+        language: system
+        require_serial: true
+        pass_filenames: false
