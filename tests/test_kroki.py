@@ -22,7 +22,7 @@ def get_content(app: Sphinx) -> str:
     testroot="kroki",
     confoverrides={"master_doc": "index"},
 )
-def test_kroki_html(app: Sphinx, _status, _warning):
+def test_kroki_html(app: Sphinx, status, warning):
     content = get_content(app)
     html = (
         r'figure[^>]*?(?:kroki kroki-plantuml align-default)?" .*?>\s*'
