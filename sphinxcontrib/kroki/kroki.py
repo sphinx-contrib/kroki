@@ -1,6 +1,6 @@
 from hashlib import sha1
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union, Callable
 
 import requests
 import yaml
@@ -13,6 +13,8 @@ from sphinx.ext.graphviz import align_spec, figure_wrapper
 from sphinx.locale import __
 from sphinx.util.docutils import SphinxDirective
 from sphinx.util.i18n import search_image_for_language
+
+from .util import process_structurizr_includes
 
 formats = ("png", "svg", "jpeg", "base64", "txt", "utxt")
 
@@ -43,6 +45,13 @@ types = {
     "vega": "vega",
     "vegalite": "vegalite",
     "wavedrom": "wavedrom",
+}
+
+Preprocessor = Callable[[str, Path], Tuple[str, List[Path]]]
+"""A preprocessor takes a file's contents and its path and returns the preprocessed contents and a list of dependencies."""
+
+preprocessors: Dict[str, Preprocessor] = {
+    "structurizr": process_structurizr_includes
 }
 
 extension_type_map = {
@@ -198,6 +207,23 @@ class Kroki(SphinxDirective):
                     )
                 ]
 
+        if diagram_type in preprocessors:
+            try:
+                (source, dependencies) = preprocessors[diagram_type](source, Path(filename))
+                source = source.strip()
+                for dependency in dependencies:
+                    self.env.note_dependency(str(dependency.absolute()))
+
+            except FileNotFoundError as e:
+                return [
+                    document.reporter.warning(
+                        __(
+                            "Kroki structurizr directive failed to process includes: %s"
+                        ) % e,
+                        line=self.lineno,
+                    )
+                ]
+
         if "format" in self.options:
             if output_format is not None:
                 return [
@@ -273,6 +299,10 @@ def render_kroki(
                 f.write(chunk)
 
         return outfn
+    except requests.exceptions.HTTPError as e:
+        raise KrokiError(
+            __("kroki did not produce a diagram, returned HTTP error: %s, reason: %s") % (e.response.status_code, e.response.reason)
+        ) from e
     except requests.exceptions.RequestException as e:
         raise KrokiError(__("kroki did not produce a diagram")) from e
     except IOError as e:
